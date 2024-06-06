@@ -1,0 +1,105 @@
+#include <iostream>
+using namespace std;
+
+
+
+struct Node {
+	
+	int data;
+	Node *next;
+};
+
+
+void insertbeginning(Node** head, int data) {
+	
+	//This is assign the newnode to the node.
+	Node *newNode = new Node();
+	
+	//put the data in the newNode;
+	newNode->data = data;
+	
+	//make next of the newNode as head.
+	newNode->next = (*head);
+	
+	//move the newNode the make the head.
+	(*head) = newNode;
+}
+
+void deleteNode(Node** head, int key) {
+	
+	
+	//Store head node.
+	Node *temp = *head;
+	//make the prev/previous be pointing to null.
+	Node *prev = nullptr;
+	
+	//make a condition for the first data the link if this met then return.
+	if(temp != nullptr && temp->data == key) {
+		*head = temp->next;
+		delete temp;
+		return;
+	}
+	//if not true then traverse until met.
+	while(temp != nullptr && temp->data != key) {
+		prev = temp;
+		temp = temp->next;
+	}
+	
+	//if the key not prensted in link.
+	if(temp == nullptr) return;
+	
+	//Unlink the node from linked list.
+	prev->next =  temp->next;
+	
+	//free memory.
+	delete temp;
+}
+
+
+void printList(Node *head) {
+	
+	while(head != nullptr)  {
+		cout << head->data << " ";
+		head = head->next;
+	}
+	
+	cout << endl;
+}
+
+void insertEnd(Node **head, int newdata) {
+	
+	Node *newNode = new Node();
+	
+	newNode->data = newdata;
+	
+	newNode->next = nullptr;
+	
+	if(*head == nullptr) {
+		*head = newNode;
+		return;
+	}
+	
+	Node *last = *head;
+	while(last->next != nullptr) {
+		last = last->next;
+	}
+	
+	last->next = newNode;
+}
+int main() {
+	
+	Node* head = nullptr;
+	
+	insertbeginning(&head, 5);
+	insertbeginning(&head, 2);
+	insertbeginning(&head, 6);
+	
+	cout << "The created linked list: ";
+	printList(head);
+	
+	deleteNode(&head, 2);
+	cout << "Linked list after delete of 2: ";
+	printList(head);
+	
+	return 0;
+}
